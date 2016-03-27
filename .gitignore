@@ -1,0 +1,8 @@
+*.pdf
+*.pyc
+*.iml
+.idea/
+venv/
+__pycache__/
+.project
+.pydevproject

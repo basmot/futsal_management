@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+from django.utils.translation import ugettext_lazy as _
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -37,18 +38,20 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'base',
 ]
 
-MIDDLEWARE_CLASSES = [
-    'django.middleware.security.SecurityMiddleware',
+MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-]
+    'django.middleware.security.SecurityMiddleware',
+)
 
 ROOT_URLCONF = 'futsal_management.urls'
 
@@ -76,9 +79,13 @@ WSGI_APPLICATION = 'futsal_management.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'futsal_management_dev',
+        'USER': 'admin',
+        'PASSWORD': 'admin',
+        'HOST': '127.0.0.1',
+        'PORT': '5432',
+    },
 }
 
 
@@ -104,9 +111,16 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'fr-be'
 
-TIME_ZONE = 'UTC'
+LANGUAGES = (
+    ('fr', _('French')),
+    ('en', _('English')),
+)
+
+DEFAULT_LANGUAGE = 'fr'
+
+TIME_ZONE = 'Europe/Brussels'
 
 USE_I18N = True
 
