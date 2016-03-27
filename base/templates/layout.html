@@ -24,7 +24,8 @@
 </head>
 <body>
   <nav class="navbar navbar-default">
-    <div class="container-fluid">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
           <span class="sr-only">Toggle navigation</span>
@@ -32,12 +33,12 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Brand</a>
+        <a class="navbar-brand" href="{% url 'home' %}">Futsal-manager</a>
       </div>
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+          <li><a href="#">Link</a></li>
           <li><a href="#">Link</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
@@ -52,20 +53,63 @@
             </ul>
           </li>
         </ul>
-        <form class="navbar-form navbar-left" role="search">
+        <!-- <form class="navbar-form navbar-left" role="search">
           <div class="form-group">
             <input class="form-control" placeholder="Search" type="text">
           </div>
           <button type="submit" class="btn btn-default">Submit</button>
-        </form>
-        <ul class="nav navbar-nav navbar-right">
-          <li><a href="#">Link</a></li>
+        </form> -->
+        <ul class="nav navbar-nav">
+          <li><a href="#"><span class="glyphicon glyphicon-question-sign"aria-hidden="true"></span> Help</a></li>
         </ul>
+        {% if request.user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false" id="bt_user">
+                    <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                    Bastien Mottiaux
+                    <span class="caret"></span></a>
+                <ul class="dropdown-menu">
+                    <li><a href="{% url 'logout' %}?next=/" id="lnk_logout">
+                        <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+                        Logout</a></li>
+                    <li><a href="" id="lnk_profile">
+                        <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
+                        Profile</a></li>
+                </ul>
+            </li>
+          </ul>
+          {% if request.user.is_superuser %}
+            <ul class="nav navbar-nav navbar-right">
+              <li><a href="{% url 'admin:index' %}"><span class="glyphicon glyphicon-tower"aria-hidden="true"></span> Administration</a></li>
+            </ul>
+          {% endif %}
+        {% else %}
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'login' %}" id="lnk_login"><span class="glyphicon glyphicon-lock"
+                                                                 aria-hidden="true"></span>Login</a>
+            </li>
+          </ul>
+        {% endif %}
       </div>
     </div>
   </nav>
 
-<div class="container">
+<div class="col-md-2">
+  {% if request.user.is_authenticated %}
+    <div class="panel panel-default">
+      <div class="panel-heading">Mes prochains événements</div>
+      <div class="panel-body">
+        {% block my_next_matchs %}
+        {% endblock %}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+<div class="col-md-8">
+<!-- <div class="container"> -->
     {% block breadcrumbarea %}
     <ol class="breadcrumb">
         <li><a href="{% url 'home' %}" id="lnk_home_futsal_management"><span class="glyphicon glyphicon-home"
@@ -78,6 +122,19 @@
     {% endblock %}
     <br>
     <br>
+</div>
+<!-- </div> -->
+
+<div class="col-md-2">
+  {% if request.user.is_authenticated %}
+    <div class="panel panel-default">
+      <div class="panel-heading">Notifications</div>
+      <div class="panel-body">
+        {% block notifications %}
+        {% endblock %}
+      </div>
+    </div>
+  {% endif %}
 </div>
 
 
