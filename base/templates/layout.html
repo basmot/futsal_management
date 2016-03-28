@@ -87,8 +87,13 @@
           {% endif %}
         {% else %}
           <ul class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'user_enrollment' %}" id="lnk_login"><span class="glyphicon glyphicon-lock"
+                                                                 aria-hidden="true"></span> S'inscrire</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
             <li><a href="{% url 'login' %}" id="lnk_login"><span class="glyphicon glyphicon-lock"
-                                                                 aria-hidden="true"></span>Login</a>
+                                                                 aria-hidden="true"></span> Login</a>
             </li>
           </ul>
         {% endif %}
@@ -109,6 +114,14 @@
 </div>
 
 <div class="col-md-8">
+  {% if messages %}
+    {% for message in messages %}
+      <div class="alert alert-dismissible {{ message.level }}">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        {{ message.message }}
+      </div>
+    {% endfor %}
+  {% endif %}
 <!-- <div class="container"> -->
     {% block breadcrumbarea %}
     <ol class="breadcrumb">

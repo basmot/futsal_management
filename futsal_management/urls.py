@@ -26,4 +26,6 @@ urlpatterns = [
 
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
+
+    url(r'^user_enrollment/$', common.user_enrollment, name='user_enrollment'),
 ]

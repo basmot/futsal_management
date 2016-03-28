@@ -1,0 +1,163 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+  <li class="active">Inscription</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">Formulaire d'inscription</h3>
+  </div>
+  <div class="panel-body">
+    <form action="{% url 'user_enrollment' %}" method="post">
+      {% csrf_token %}
+      <div class="col-md-10 col-md-offset-1">
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group {% if form.username.errors %} alert alert-danger {% endif %}">
+                <label for="username" class="control-label">Username <span class="text-danger">*</span></label>
+                <input name="username" class="form-control" id="username" value="{{ form.username.value | default_if_none:'' }}" placeholder="Type a login" type="text">
+              </div>
+              <font style="color:red;">{{ form.username.errors }}</font>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="password1" class="control-label">Password <span class="text-danger">*</span></label>
+                <input name="password1" class="form-control" id="password1" value="{{ form.password1.value | default_if_none:'' }}" placeholder="Password" type="password">
+              </div>
+              <font style="color:red;">{{ form.password1.errors }}</font>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="password2" class="control-label">Password verification <span class="text-danger">*</span></label>
+                <input name="password2" class="form-control" id="password2" value="{{ form.password2.value | default_if_none:'' }}" placeholder="Re-enter your password" type="password">
+              </div>
+              <font style="color:red;">{{ form.password2.errors }}</font>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="first_name" class="control-label">First name <span class="text-danger">*</span></label>
+                <input name="first_name" class="form-control" id="first_name" value="{{ form.first_name.value | default_if_none:'' }}" placeholder="Your first name" type="text">
+              </div>
+              <font style="color:red;">{{ form.first_name.errors }}</font>
+            </div>
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="last_name" class="control-label">Last name <span class="text-danger">*</span></label>
+                <input name="last_name" class="form-control" id="last_name" value="{{ form.last_name.value | default_if_none:'' }}" placeholder="Your last name" type="text">
+              </div>
+              <font style="color:red;">{{ form.last_name.errors }}</font>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-md-2">
+              <label for="gender" class="control-label">Gender</label>
+              <select class="form-control" id="gender" name="gender">
+                {% for gender in GENDER_CHOICES %}
+                    <option value="{{ gender.0 }}" {% if form.gender.value ==  gender.0 %} selected {% endif %}>{{ gender.1 }}</option>
+                {% endfor %}
+              </select>
+            </div>
+            <div class="col-md-2">
+              <label for="language" class="control-label">Language</label>
+              <select class="form-control" id="language" name="language">
+                    <option value="fr" selected>Français</option>
+                    <option value="en">English</option>
+              </select>
+            </div>
+          </div>
+          <br>
+
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="email" class="control-label">Email <span class="text-danger">*</span></label>
+                <input name="email" class="form-control" id="email" value="{{ form.email.value | default_if_none:'' }}" placeholder="Your email address" type="email">
+              </div>
+              <font style="color:red;">{{ form.email.errors }}</font>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="phone_mobile" class="control-label">Mobile phone <span class="text-danger">*</span></label>
+                <input name="phone_mobile" class="form-control" id="phone_mobile" value="{{ form.phone_mobile.value | default_if_none:'' }}" placeholder="Mobile phone (with 0032)" type="text">
+              </div>
+              <font style="color:red;">{{ form.phone_mobile.errors }}</font>
+            </div>
+            <div class="col-md-8">
+              <p class="text-muted" style="margin-top:30pt;">(ex : 0032 473 12 34 56 <label style="text-decoration: line-through;" >0473 12 34 56</label>)</p>
+            </div>
+          </div>
+
+          <br>
+
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <h3 class="panel-title">Address</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-md-2">
+              <label for="adddress_label" class="control-label">Label</label>
+              <select class="form-control" id="adddress_label" name="adddress_label">
+                    <option value="RESIDENTIAL" selected>Residential</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-4">
+              <div class="form-group">
+                <label for="location" class="control-label">Location</label>
+                <input name="location" class="form-control" id="location" value="{{ form.location.value | default_if_none:'' }}" placeholder="Your residential location" type="text">
+              </div>
+              <font style="color:red;">{{ form.location.errors }}</font>
+            </div>
+            <div class="col-md-2">
+              <div class="form-group">
+                <label for="postal_code" class="control-label">Postal code</label>
+                <input name="postal_code" class="form-control" id="postal_code" value="{{ form.postal_code.value | default_if_none:'' }}" placeholder="Your residential postal code" type="text">
+              </div>
+              <font style="color:red;">{{ form.postal_code.errors }}</font>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="city" class="control-label">City</label>
+                <input name="city" class="form-control" id="city" value="{{ form.city.value | default_if_none:'' }}" placeholder="Your residential city" type="text">
+              </div>
+              <font style="color:red;">{{ form.city.errors }}</font>
+            </div>
+            <div class="col-md-3">
+              <div class="form-group">
+                <label for="country" class="control-label">Country</label>
+                <input name="country" class="form-control" id="country" value="{{ form.country.value | default_if_none:'' }}" placeholder="Your residential country" type="text">
+              </div>
+              <font style="color:red;">{{ form.country.errors }}</font>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <p class="text-danger">* Champs obligatoires</p>
+        <button type="submit" class="btn btn-primary" title="Soumettre le formulaire d'inscription" id="bt_save_inscription" data-toggle="modal" data-target="#modal_infos">
+                  <span class="glyphicon glyphicon-save" aria-hidden="true" style="font-size: 120%;"> M'inscrire</span>
+              </button>
+      </div>
+
+    </div>
+    </form>
+  </div>
+</div>
+
+{% endblock %}
