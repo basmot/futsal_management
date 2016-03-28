@@ -28,3 +28,21 @@ class Person(models.Model):
 
     def __str__(self):
         return self.user
+
+
+def search(user=None, gender=None, email=None, phone_mobile=None):
+    queryset = Person.objects
+
+    if user :
+        queryset = queryset.filter(user=user)
+
+    if gender :
+        queryset = queryset.filter(gender=gender)
+
+    if email :
+        queryset = queryset.filter(email=email)
+
+    if phone_mobile :
+        queryset = queryset.filter(phone_mobile=phone_mobile)
+
+    return queryset
