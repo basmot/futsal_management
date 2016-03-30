@@ -24,4 +24,4 @@ class Match(models.Model):
 
 
     def __str__(self):
-        return self.date + self.place
+        return str(self.date) + str(self.place)
