@@ -10,6 +10,9 @@ admin.site.register(account.Account,
 admin.site.register(futsal_team.FutsalTeam,
                     futsal_team.FutsalTeamAdmin)
 
+admin.site.register(futsal_team_enrollment.FutsalTeamEnrollment,
+                    futsal_team_enrollment.FutsalTeamEnrollmentAdmin)
+
 admin.site.register(inscription_state.InscriptionState,
                     inscription_state.InscriptionStateAdmin)
 
