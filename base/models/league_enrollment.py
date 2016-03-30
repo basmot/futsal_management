@@ -37,4 +37,4 @@ class LeagueEnrollment(models.Model):
     date             = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
-        return self.league + self.futsal_team
+        return str(self.league) + str(self.futsal_team)

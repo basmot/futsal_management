@@ -15,4 +15,4 @@ class Account(models.Model):
 
 
     def __str__(self):
-        return self.owner.user + " " + str(self.id)
+        return str(self.owner.user) + " " + str(self.id)

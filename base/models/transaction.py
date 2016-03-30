@@ -16,4 +16,4 @@ class Transaction(models.Model):
 
 
     def __str__(self):
-        return self.date + " - " + amount + "€"
+        return str(self.date) + " - " + str(self.amount) + "€"

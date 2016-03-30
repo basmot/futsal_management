@@ -27,7 +27,7 @@ class Person(models.Model):
 
 
     def __str__(self):
-        return self.user
+        return str(self.user)
 
 
 def search(user=None, gender=None, email=None, phone_mobile=None):

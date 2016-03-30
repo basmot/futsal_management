@@ -24,4 +24,4 @@ class InscriptionState(models.Model):
 
 
     def __str__(self):
-        return self.user + " " + self.state
+        return str(self.user) + " " + self.state
