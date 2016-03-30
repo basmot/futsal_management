@@ -38,13 +38,14 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="#">Link</a></li>
-          <li><a href="#">Link</a></li>
+          <li><a href="#">Mes événements</a></li>
+          <li><a href="#">Mes équipes</a></li>
+          <li><a href="#">Messagerie</a></li>
           <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Dropdown <span class="caret"></span></a>
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
-              <li><a href="#">Action</a></li>
-              <li><a href="#">Another action</a></li>
+              <li><a href="{% url 'futsal_teams' %}">S'inscrire dans une équipe</a></li>
+              <li><a href="">Participer à un événement</a></li>
               <li><a href="#">Something else here</a></li>
               <li class="divider"></li>
               <li><a href="#">Separated link</a></li>
@@ -118,7 +119,7 @@
     {% for message in messages %}
       <div class="alert alert-dismissible {{ message.level }}">
         <button type="button" class="close" data-dismiss="alert">&times;</button>
-        {{ message.message }}
+        {{ message.content }}
       </div>
     {% endfor %}
   {% endif %}
@@ -153,6 +154,7 @@
 
 <script src="{% static 'js/jquery-2.1.4.min.js' %}"></script>
 <script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/futsal-management.js' %}"></script>
 {% block script %}
 {% endblock %}
 </body>
