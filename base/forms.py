@@ -5,6 +5,10 @@ from django.core.validators import validate_email
 from django.contrib.auth.models import User
 
 
+class FutsalTeamForm(forms.Form):
+    denomination = forms.CharField(min_length=3, strip=True)
+    
+
 class UserEnrollmentForm(forms.Form):
     username    = forms.CharField(min_length=9)
     password1   = forms.CharField(widget=forms.PasswordInput, min_length=9)

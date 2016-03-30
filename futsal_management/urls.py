@@ -27,5 +27,9 @@ urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
 
+    url(r'^futsal_teams/$', common.futsal_teams, name='futsal_teams'),
+    url(r'^futsal_teams/search$', common.futsal_teams_search, name='futsal_teams_search'),
+    url(r'^futsal_teams/([0-9]+)/enrollment$', common.futsal_team_enrollment, name='futsal_team_enrollment'),
+
     url(r'^user_enrollment/$', common.user_enrollment, name='user_enrollment'),
 ]
