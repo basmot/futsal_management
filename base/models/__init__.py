@@ -1,5 +1,6 @@
 from base.models import account_transaction
 from base.models import account
+from base.models import futsal_team_enrollment
 from base.models import futsal_team
 from base.models import inscription_state
 from base.models import league_enrollment

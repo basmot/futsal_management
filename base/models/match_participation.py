@@ -23,8 +23,9 @@ class MatchParticipation(models.Model):
 
     match       = models.ForeignKey('Match')
     person      = models.ForeignKey('Person')
+    futsal_team = models.ForeignKey('FutsalTeam', null = True, blank = True)
     position    = models.CharField(max_length=2, choices=POSITIONS)
 
 
     def __str__(self):
-        return self.person + self.match
+        return str(self.person) + str(self.match)
