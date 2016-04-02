@@ -9,6 +9,11 @@ class FutsalTeamForm(forms.Form):
     denomination = forms.CharField(min_length=3, strip=True)
     
 
+class MatchsForm(forms.Form):
+    futsal_team_denomination = forms.CharField(min_length=2, strip=True, required=False)
+    sport_hall_denomination  = forms.CharField(min_length=2, strip=True, required=False)
+
+
 class UserEnrollmentForm(forms.Form):
     username    = forms.CharField(min_length=9)
     password1   = forms.CharField(widget=forms.PasswordInput, min_length=9)

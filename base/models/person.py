@@ -25,6 +25,20 @@ class Person(models.Model):
     phone_mobile = models.CharField(max_length=30, blank=True, null=True)
     language     = models.CharField(max_length=30, null=True, choices=settings.LANGUAGES, default=settings.DEFAULT_LANGUAGE)
 
+    def username(self):
+        if self.user is None:
+            return None
+        return self.user.username
+
+    def first_name(self):
+        if self.user is None:
+            return None
+        return self.user.first_name
+
+    def last_name(self):
+        if self.user is None:
+            return None
+        return self.user.last_name
 
     def __str__(self):
         return str(self.user)

@@ -26,10 +26,13 @@ class FutsalTeamEnrollment(models.Model):
     def __str__(self):
         return str(self.person) + str(self.futsal_team)
 
-def search(futsal_team=None):
+def search(futsal_team=None, person=None):
     queryset = FutsalTeamEnrollment.objects
 
     if futsal_team :
         queryset = queryset.filter(futsal_team=futsal_team)
+
+    if person :
+        queryset = queryset.filter(person=person)
 
     return queryset

@@ -121,7 +121,6 @@ def futsal_team_enrollment(request, futsal_team_id):
             Son gérant doit maintenant accepter ou refuser votre candidature. Vous serez informé de son choix dans votre boite à message.")
     else :
         message = new_message(AlertLevels.ERROR, "Votre demande de recrutement n'a pas aboutie ; aucun futsal_team_id fourni. Veuillez contacter le support.")
-    print(str(message))
     return render(request, "futsal_teams.html", {'messages' : [message]})
 
 
@@ -131,3 +130,82 @@ def futsal_team_enrollments(request):
     person = mdl.person.search(user=user)
     futsal_team_enrollments = mdl.futsal_team_enrollment.search(person=person)
     return render(request, "futsal_team_enrollments.html", {'futsal_team_enrollments' : futsal_team_enrollments})
+
+
+@login_required
+def futsal_team_event(request, futsal_team_id, match_id):
+    if futsal_team_id and match_id :
+        futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
+        match = mdl.match.search(id=match_id)[0]
+        match_participations = mdl.match_participation.search(match=match, futsal_team=futsal_team)
+        persons=[mp.person for mp in match_participations]
+        print('persons === ' + str(persons))
+    return render(request, "match_participation.html", {'futsal_team' : futsal_team,
+                                                         'match' : match,
+                                                         'persons' : [mp.person for mp in match_participations],
+                                                         'user_person' : mdl.person.search(user=request.user)[0],
+                                                         'POSITIONS' : mdl.match_participation.MatchParticipation.POSITIONS})
+
+
+def _save_participation(request, futsal_team_id, match_id):
+    """
+    Sauvegarde la aprticipation du user à un événement.
+    Cette méthode est privée et séparée des "render" car elle est réutilisée à plusieurs endroits.
+    """
+    if futsal_team_id and match_id :
+        futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
+        match = mdl.match.search(id=match_id)[0]
+        user = request.user
+        person = mdl.person.search(user=user)[0]
+        match_participation = mdl.match_participation.MatchParticipation(futsal_team=futsal_team,
+                                                                         match=match,
+                                                                         person=person,
+                                                                         position=request.POST['position'])
+        match_participation.save()
+        message = new_message(AlertLevels.SUCCESS, "Vous participez désormais à l'événement du " + str(match.date) + " de l'équipe " + futsal_team.acronym + ".")
+    else :
+        futsal_team = None
+        matchs = None
+        persons = None
+        message = new_message(AlertLevels.ERROR, "Votre demande n'a pas aboutie. Aucun id fourni pour futsal_team. Veuillez contacter le support.")
+    return {'futsal_team' : futsal_team,
+            'account' : futsal_team.account,
+            'messages' : [message]}
+
+
+@login_required
+def match_participation_save(request, futsal_team_id, match_id):
+    infos = _save_participation(request, futsal_team_id, match_id)
+    matchs = mdl.predicted_match.get_matchs(futsal_team=info['futsal_team'])
+    futsal_team_enrollments = mdl.futsal_team_enrollment.search(futsal_team=info['futsal_team'])
+    persons = [fte.person for fte in futsal_team_enrollments]
+    infos['matchs'] = matchs
+    infos['persons'] = persons
+    return render(request, "futsal_team.html", infos)
+
+
+@login_required
+def match_participation_delete(request, futsal_team_id, match_id):
+    if futsal_team_id and match_id :
+        futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
+        match = mdl.match.search(id=match_id)[0]
+        user = request.user
+        person = mdl.person.search(user=user)[0]
+        nb_rows_deleted = mdl.match_participation.delete(match, person, futsal_team)
+        if nb_rows_deleted == 0 :
+            message = new_message(AlertLevels.ERROR, "Une erreur s'est produite ; nous n'avons pas su vous désincrire de l'événement. Veuillez contacter le support.")
+        else :
+            message = new_message(AlertLevels.SUCCESS, "Vous ne faites désormais plus partie de l'événement du " + str(match.date) + " de l'équipe " + futsal_team.acronym + ".")
+        matchs = mdl.match.search(futsal_team=futsal_team)
+        futsal_team_enrollments = mdl.futsal_team_enrollment.search(futsal_team=futsal_team)
+        persons = [fte.person for fte in futsal_team_enrollments]
+    else :
+        futsal_team = None
+        matchs = None
+        persons = None
+        message = new_message(AlertLevels.ERROR, "Votre demande n'a pas aboutie. Aucun id fourni pour futsal_team. Veuillez contacter le support.")
+    return render(request, "futsal_team.html", {'futsal_team' : futsal_team,
+                                                'account' : futsal_team.account,
+                                                'matchs' : matchs,
+                                                'persons' : persons,
+                                                'messages' : [message]})

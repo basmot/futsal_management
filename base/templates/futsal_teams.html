@@ -9,10 +9,15 @@
 
 <div class="panel panel-primary">
   <div class="panel-heading">
-    <h3 class="panel-title">Futsal teams</h3>
+    <h3 class="panel-title">
+      Futsal teams
+      <a href="#"><span class="glyphicon glyphicon-question-sign text-success" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                        data-original-title="Recherchez des équipes et effectuez une demande d'enrôlement !">
+                  </span></a>
+    </h3>
   </div>
   <div class="panel-body">
-    <p>Recherchez des équipes et effectuez une demande d'enrôlement !</p>
+    <!-- <p>Recherchez des équipes et effectuez une demande d'enrôlement !</p> -->
     <br>
     <form action="{% url 'futsal_teams_search' %}" method="post">
       {% csrf_token %}

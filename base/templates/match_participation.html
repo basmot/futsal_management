@@ -1,0 +1,120 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+  <li><a href="{% url 'futsal_team_enrollments' %}" id="lnk_futsal_team_enrollment">Mes équipes</a></li>
+  <li><a href="{% url 'futsal_team' futsal_team.id %}" id="lnk_futsal_team">{{futsal_team.acronym}}</a></li>
+  <li><a href="{% url 'futsal_team' futsal_team.id %}" id="lnk_match_participations">Evénements</a></li>
+  <li class="active">({{match.date}})</li>
+{% endblock %}
+
+{% block content %}
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      {{futsal_team.acronym}} - Evenement du {{match.date}} <a href="#"><span class="glyphicon glyphicon-question-sign text-success" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                                                                data-original-title="Vous trouverez ici tous les détails sur l'événement que vous avez sélectionné.">
+                             </span></a>
+    </h3>
+  </div>
+  <div class="panel-body">
+
+    <br>
+    <div class="row">
+      <div class="col-md-3">
+          <label>Date</label><br>
+          {{ match.date }}
+      </div>
+      <div class="col-md-3">
+          <label>Lieu</label><br>
+          {{ match.place.address }}
+      </div>
+      <div class="col-md-3">
+          <label>Type de rencontre</label><br>
+          {{ match.match_type }}
+      </div>
+      <div class="col-md-3">
+          <label>Prix de la participation</label><br>
+          3€
+      </div>
+    </div>
+    <br>
+    <hr>
+    {% if user_person not in persons %}
+      <form action="{% url 'match_participation_save' futsal_team.id match.id %}" method="post">
+        {% csrf_token %}
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label class="control-label">Rôle</label>
+              <ul class="list-inline">
+                {% for pos in POSITIONS %}
+                    <li>
+                        <input name="position" id="optionsRadios_{{pos.0}}" value="{{ pos.0 }}" type="radio" {% if pos.0 == 'p' %}checked{%endif%} > {{ pos.1 }}
+                    </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-1"><i class="fa fa-share" style="font-size: 400%; color: #6699FF;"></i></div>
+          <div class="col-md-5">
+              <!-- <h4 class="media-heading"> -->
+                <button type="submit" id="bt_submit_match_participation" class="btn btn-link" role="button"
+                        title=""><h4 class="media-heading">Je participe !</h4></button>
+                <!-- <a href="#" type="submit" id="lnk_match_participation_save">Je participe !</a> -->
+              <!-- </h4> -->
+              {% if persons|length == 0 %}
+                <p>Choisissez votre rôle et soyez le premier à participer à cet événement !</p>
+              {% else %}
+                <p>Choisissez votre rôle et participez à cet événement !</p>
+              {% endif %}
+          </div>
+        </div>
+      </form>
+      <hr>
+    {% else %}
+      <div class="row">
+        <div class="col-md-2">
+          <a href="{% url 'match_participation_delete' futsal_team.id match.id %}" class="btn btn-warning">Me désincrire de l'événement</a>
+        </div>
+      </div>
+      <hr>
+    {% endif %}
+
+    <br>
+
+    {% if persons|length == 0 %}
+      <div class="row">
+        <div class="col-md-6">
+          <p class="text-warning"><i class="fa fa-warning" style="font-size: 120%;"></i> Aucun joueur inscrit à l'événement pour le moment.</p>
+        </div>
+      </div>
+      <br>
+    {% else %}
+      <p class="text-info">Joueurs présents : </p>
+        <div class="panel panel-default">
+          <table class="table table-striped table-hover">
+            <thead>
+              <tr>
+                <th>Nom</th>
+                <th>Adresse mail</th>
+                <th>Numéro de Gsm</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for person in persons %}
+                <tr>
+                  <td>{{person.first_name}} {{person.last_name}}</td>
+                  <td>{{person.email}}</td>
+                  <td>{{person.phone_mobile}}</td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

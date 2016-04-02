@@ -33,6 +33,8 @@ urlpatterns = [
     url(r'^futsal_teams/search$', common.futsal_teams_search, name='futsal_teams_search'),
     url(r'^futsal_teams/([0-9]+)$', common.futsal_team, name='futsal_team'),
     url(r'^futsal_teams/([0-9]+)/enrollment$', common.futsal_team_enrollment, name='futsal_team_enrollment'),
+    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)$', common.futsal_team_event, name='futsal_team_event'),
+
 
     url(r'^user_enrollment/$', common.user_enrollment, name='user_enrollment'),
 ]
