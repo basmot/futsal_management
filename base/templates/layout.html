@@ -38,14 +38,21 @@
 
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="#">Mes événements</a></li>
-          <li><a href="#">Mes équipes</a></li>
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Evénements<span class="caret"></span></a>
+            <ul class="dropdown-menu" role="menu">
+              <li><a href="{% url 'matchs' %}">Tous</a></li>
+              <li><a href="#">De mes équipes</a></li>
+              <li><a href="#">Auxquels je participe</a></li>
+            </ul>
+          </li>
+          <li><a href="{% url 'futsal_team_enrollments' %}">Mes équipes</a></li>
           <li><a href="#">Messagerie</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Actions<span class="caret"></span></a>
             <ul class="dropdown-menu" role="menu">
               <li><a href="{% url 'futsal_teams' %}">S'inscrire dans une équipe</a></li>
-              <li><a href="">Participer à un événement</a></li>
+              <li><a href="{% url 'matchs' %}">Participer à un événement</a></li>
               <li><a href="#">Something else here</a></li>
               <li class="divider"></li>
               <li><a href="#">Separated link</a></li>
@@ -104,6 +111,16 @@
 
 <div class="col-md-2">
   {% if request.user.is_authenticated %}
+    <div class="panel panel-default">
+      <div class="panel-heading">Mon compte <a href="#"><span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                                   data-original-title="Certains événements ne sont pas gratuits. Votre compte sera débité à chaque fois que vous participez à un événement.">
+                             </span></a></div>
+      <div class="panel-body">
+        Solde : 0€ <a href="#"><span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                                     data-original-title="Vous avez actuellement 0€ sur votre compte ; vous ne pourrez donc participez qu'aux événements gratuits.">
+                               </span></a>
+      </div>
+    </div>
     <div class="panel panel-default">
       <div class="panel-heading">Mes prochains événements</div>
       <div class="panel-body">
