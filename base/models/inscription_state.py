@@ -25,7 +25,7 @@ from django.contrib.auth.models import User
 
 class InscriptionStateAdmin(admin.ModelAdmin):
     list_display = ('user', 'state', 'date')
-    fieldsets = ((None, {'fields': ('state','date')}),)
+    fieldsets = ((None, {'fields': ('state','date', 'user')}),)
     search_fields = ['user__last_name', 'user__first_name']
     list_filter = ('state',)
 

@@ -34,3 +34,12 @@ class Account(models.Model):
 
     def __str__(self):
         return str(self.owner.user) + " " + str(self.id)
+
+
+def search(owner=None):
+    queryset = Account.objects
+
+    if owner :
+        queryset = queryset.filter(owner=owner)
+
+    return queryset

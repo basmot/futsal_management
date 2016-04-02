@@ -132,9 +132,10 @@
                                    data-original-title="Certains événements ne sont pas gratuits. Votre compte sera débité à chaque fois que vous participez à un événement.">
                              </span></a></div>
       <div class="panel-body">
-        Solde : 0€ <a href="#"><span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
-                                     data-original-title="Vous avez actuellement 0€ sur votre compte ; vous ne pourrez donc participez qu'aux événements gratuits.">
-                               </span></a>
+        Solde : {{request.session.balance}}€
+        <!-- <a href="#"><span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                          data-original-title="Vous avez actuellement 0€ sur votre compte ; vous ne pourrez donc participez qu'aux événements gratuits.">
+                    </span></a> -->
       </div>
     </div>
     <div class="panel panel-default">

@@ -36,19 +36,31 @@ def login(request):
     if request.method == 'POST' :
         username = request.POST['username']
         password = request.POST['password']
-        user = User.objects.filter(username=username, password=password)
+        user = authenticate(username=username, password=password)
+        print("user====" + str(user))
         if user :
-            inscr_state = mdl.inscription_state.search(user=user)[0]
-            STATES = mdl.inscription_state.InscriptionState.STATES
-            if inscr_state.state == STATES[0][0] :
-                message = new_message(AlertLevels.WARNING, "Votre login n'a pas encore été validé par l'administrateur du site.\
-                                                            Veuillez attendre que ce dernier valide votre inscription. Vous pourrez\
-                                                            ensuite vous identifier tout à fait normalement.")
-                return render(request, "registration/login.html", {'messages' : [message]})
-            elif inscr_state.state == STATES[2][0] :
-                message = new_message(AlertLevels.WARNING, "Votre demande d'inscription a été refusée ou votre compte a été temporairement désactivé. \
-                                                            Vous ne saurez donc pas vous connecter. ")
-            return render(request, "registration/login.html", {'messages' : [message]})
+            inscr_states = mdl.inscription_state.search(user=user)
+            if inscr_states :
+                inscr_state = inscr_states[0] #inscr_state is a queryset
+                STATES = mdl.inscription_state.InscriptionState.STATES
+                if inscr_state.state == STATES[0][0] :
+                    message = new_message(AlertLevels.WARNING, "Votre login n'a pas encore été validé par l'administrateur du site.\
+                                                                Veuillez attendre que ce dernier valide votre inscription. Vous pourrez\
+                                                                ensuite vous identifier tout à fait normalement.")
+                    return render(request, "registration/login.html", {'messages' : [message]})
+                elif inscr_state.state == STATES[2][0] :
+                    message = new_message(AlertLevels.WARNING, "Votre demande d'inscription a été refusée ou votre compte a été temporairement désactivé. \
+                                                                Vous ne saurez donc pas vous connecter. ")
+                    return render(request, "registration/login.html", {'messages' : [message]})
+            person = mdl.person.search(user=user)[0]
+            accounts = mdl.account.search(owner=person)
+            if accounts :
+                request.session['balance'] = accounts[0].balance
+            else :
+                account = mdl.account.Account()
+                account.save()
+                request.session['balance'] = 0
+
     return django_login(request)
 
 
@@ -56,12 +68,11 @@ def user_enrollment(request):
     if request.method == 'POST':
         form = UserEnrollmentForm(request.POST)
         if form.is_valid():
-            user = User(username   = form.cleaned_data['username'],
+            user = User.objects.create_user(form.cleaned_data['username'],
                         first_name = form.cleaned_data['first_name'],
-                        password = form.cleaned_data['password2'],
+                        password   = form.cleaned_data['password2'],
                         last_name  = form.cleaned_data['last_name'],
                         email      = form.cleaned_data['email'])
-            user.save()
             person = mdl.person.Person(user       = user,
                                        gender     = form.cleaned_data['gender'],
                                        email      = form.cleaned_data['email'],
