@@ -22,6 +22,8 @@ from base.forms import UserEnrollmentForm
 from base import models as mdl
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.views import login as django_login
+from django.contrib.auth import authenticate
 from base.views.reference import AlertLevels, new_message
 
 
@@ -30,12 +32,33 @@ def home(request):
     return render(request, "home.html")
 
 
+def login(request):
+    if request.method == 'POST' :
+        username = request.POST['username']
+        password = request.POST['password']
+        user = User.objects.filter(username=username, password=password)
+        if user :
+            inscr_state = mdl.inscription_state.search(user=user)[0]
+            STATES = mdl.inscription_state.InscriptionState.STATES
+            if inscr_state.state == STATES[0][0] :
+                message = new_message(AlertLevels.WARNING, "Votre login n'a pas encore été validé par l'administrateur du site.\
+                                                            Veuillez attendre que ce dernier valide votre inscription. Vous pourrez\
+                                                            ensuite vous identifier tout à fait normalement.")
+                return render(request, "registration/login.html", {'messages' : [message]})
+            elif inscr_state.state == STATES[2][0] :
+                message = new_message(AlertLevels.WARNING, "Votre demande d'inscription a été refusée ou votre compte a été temporairement désactivé. \
+                                                            Vous ne saurez donc pas vous connecter. ")
+            return render(request, "registration/login.html", {'messages' : [message]})
+    return django_login(request)
+
+
 def user_enrollment(request):
     if request.method == 'POST':
         form = UserEnrollmentForm(request.POST)
         if form.is_valid():
             user = User(username   = form.cleaned_data['username'],
                         first_name = form.cleaned_data['first_name'],
+                        password = form.cleaned_data['password2'],
                         last_name  = form.cleaned_data['last_name'],
                         email      = form.cleaned_data['email'])
             user.save()

@@ -43,3 +43,13 @@ class InscriptionState(models.Model):
 
     def __str__(self):
         return str(self.user) + " " + self.state
+
+
+
+def search(user=None):
+    queryset = InscriptionState.objects
+
+    if user :
+        queryset = queryset.filter(user=user)
+
+    return queryset
