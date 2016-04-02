@@ -33,7 +33,7 @@ Including another URLconf
 """
 from django.conf.urls import url, include
 from django.contrib import admin
-from django.contrib.auth.views import login, logout
+from django.contrib.auth.views import logout
 
 from base.views import common, futsal_team, futsal_team_enrollment, match
 
@@ -42,7 +42,7 @@ urlpatterns = [
 
     url(r'^admin/', admin.site.urls),
 
-    url(r'^login/$', login, name='login'),
+    url(r'^login/$', common.login, name='login'),
     url(r'^logout/$', logout, name='logout'),
 
     url(r'^futsal_team_enrollments/$', futsal_team_enrollment.futsal_team_enrollments, name='futsal_team_enrollments'),
