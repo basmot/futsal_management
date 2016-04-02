@@ -209,3 +209,24 @@ def match_participation_delete(request, futsal_team_id, match_id):
                                                 'matchs' : matchs,
                                                 'persons' : persons,
                                                 'messages' : [message]})
+@login_required
+def matchs(request):
+    form = MatchsForm()
+    return render(request, "matchs.html")
+
+
+@login_required
+def matchs_search(request):
+    if request.method == 'POST':
+        form = MatchsForm(request.POST)
+        if form.is_valid() :
+            futsal_team_denomination = form.cleaned_data['futsal_team_denomination']
+            sport_hall_denomination = form.cleaned_data['sport_hall_denomination']
+            predicted_matchs = mdl.predicted_match.search(futsal_team_denomination=futsal_team_denomination, sport_hall_denomination=sport_hall_denomination)
+            matchs = [pm.match for pm in predicted_matchs]
+        else :
+            matchs = None
+    else :
+        form = MatchsForm()
+    return render(request, "matchs.html", {'form' : form,
+                                           'matchs' : matchs})

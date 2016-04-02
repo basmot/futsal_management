@@ -31,6 +31,9 @@ admin.site.register(match.Match,
 admin.site.register(person.Person,
                     person.PersonAdmin)
 
+admin.site.register(predicted_match.PredictedMatch,
+                    predicted_match.PredictedMatchAdmin)
+
 admin.site.register(person_address.PersonAddress,
                     person_address.PersonAddressAdmin)
 

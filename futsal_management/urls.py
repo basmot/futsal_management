@@ -37,6 +37,8 @@ urlpatterns = [
     url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/participate$', common.match_participation_save, name='match_participation_save'),
     url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/delete_participation$', common.match_participation_delete, name='match_participation_delete'),
 
+    url(r'^matchs/$', common.matchs, name='matchs'),
+    url(r'^matchs/search$', common.matchs_search, name='matchs_search'),
 
     url(r'^user_enrollment/$', common.user_enrollment, name='user_enrollment'),
 ]
