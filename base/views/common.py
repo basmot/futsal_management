@@ -68,6 +68,24 @@ def futsal_teams(request):
 
 
 @login_required
+def futsal_team(request, futsal_team_id):
+    if futsal_team_id:
+        futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
+        matchs = mdl.predicted_match.get_matchs(futsal_team=futsal_team)
+        futsal_team_enrollments = mdl.futsal_team_enrollment.search(futsal_team=futsal_team)
+        persons = [fte.person for fte in futsal_team_enrollments]
+    else :
+        futsal_team = None
+        matchs = None
+        persons = None
+        message = new_message(AlertLevels.ERROR, "Votre demande de recrutement n'a pas aboutie ; l'équipe sélectionnée n'existe pas/plus.")
+    return render(request, "futsal_team.html", {'futsal_team' : futsal_team,
+                                                'account' : futsal_team.account,
+                                                'matchs' : matchs,
+                                                'persons' : persons})
+
+
+@login_required
 def futsal_teams_search(request):
     # form = FutsalTeamForm(request.POST)
     denomination = request.POST['denomination']
