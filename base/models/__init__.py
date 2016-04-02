@@ -9,6 +9,7 @@ from base.models import match_participation
 from base.models import match
 from base.models import person_address
 from base.models import person
+from base.models import predicted_match
 from base.models import sport_hall_address
 from base.models import sport_hall
 from base.models import transaction
