@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from base.forms import UserEnrollmentForm, FutsalTeamForm
+from base.forms import UserEnrollmentForm, FutsalTeamForm, MatchsForm
 from base import models as mdl
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -83,7 +83,6 @@ def futsal_team_enrollment(request, futsal_team_id):
     if futsal_team_id:
         futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
         enrollments = mdl.futsal_team_enrollment.search(futsal_team=futsal_team)
-        print("enrollment ====== " + str(len(enrollments)))
         if len(enrollments) > 0 : # Déjà inscrit à l'équipe
             enrollment = enrollments[0]
             enr_states = mdl.futsal_team_enrollment.FutsalTeamEnrollment.STATES
@@ -103,6 +102,14 @@ def futsal_team_enrollment(request, futsal_team_id):
             message = new_message(AlertLevels.SUCCESS, "Votre demande de recrutement pour l'équipe " + futsal_team.acronym + " a bien été enregistrée. \
             Son gérant doit maintenant accepter ou refuser votre candidature. Vous serez informé de son choix dans votre boite à message.")
     else :
-        message = new_message(AlertLevels.ERROR, "Votre demande de recrutement n'a pas aboutie ; l'équipe sélectionnée n'existe pas/plus.")
+        message = new_message(AlertLevels.ERROR, "Votre demande de recrutement n'a pas aboutie ; aucun futsal_team_id fourni. Veuillez contacter le support.")
     print(str(message))
     return render(request, "futsal_teams.html", {'messages' : [message]})
+
+
+@login_required
+def futsal_team_enrollments(request):
+    user = request.user
+    person = mdl.person.search(user=user)
+    futsal_team_enrollments = mdl.futsal_team_enrollment.search(person=person)
+    return render(request, "futsal_team_enrollments.html", {'futsal_team_enrollments' : futsal_team_enrollments})

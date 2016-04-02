@@ -1,0 +1,47 @@
+{% extends "layout.html" %}
+{% load staticfiles %}
+
+{% block breadcrumb %}
+  <li class="active">Mes équipes</li>
+{% endblock %}
+
+{% block content %}
+
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">
+      Mes équipes <a href="#">
+        <!-- <span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-container="body" data-toggle="popover" data-placement="right"
+                                   data-content="Vous trouverez ici la liste des équipes dans lesquelles vous êtes inscrits."> -->
+                                   <span class="glyphicon glyphicon-question-sign" style="font-size: 100%;" data-toggle="tooltip" data-placement="right" title=""
+                                                                data-original-title="Vous trouverez ici la liste des équipes dans lesquelles vous êtes inscrits.">
+                             </span></a>
+    </h3>
+  </div>
+  <div class="panel-body">
+    <br>
+
+    {% if futsal_team_enrollments|length == 0 %}
+      <p class="text-warning"><i class="fa fa-warning" style="font-size: 120%;"></i> Vous n'êtes inscrit à aucune équipe pour le moment.</p>
+      <br>
+      <div class="row">
+        <div class="col-md-1"><i class="fa fa-share" style="font-size: 400%; color: #6699FF;"></i></div>
+        <div class="col-md-5">
+            <h4 class="media-heading"><a href="{% url 'futsal_teams' %}" id="lnk_home_catalog">S'inscrire dans une nouvelle équipe</a></h4>
+            <p>Recherchez et intégrez une nouvelle équipe de football en salle dès maintenant !</p></div>
+      </div>
+    {% else %}
+      {% for fte in futsal_team_enrollments %}
+        <div class="row">
+          <div class="col-md-1"><i class="fa fa-group" style="font-size: 400%; color: #6699FF; padding : 4px;"></i></div>
+          <div class="col-md-5">
+              <h4 class="media-heading"><a href="{% url 'futsal_team' fte.futsal_team.id %}" id="lnk_home_catalog">{{fte.futsal_team.acronym}}</a></h4>
+              <p>Affichez tous les détails de votre équipe ; prochaines rencontres, joueurs affiliés, ...</p></div>
+          </div>
+        </div>
+      {% endfor %}
+    {% endif %}
+  </div>
+</div>
+
+{% endblock %}
