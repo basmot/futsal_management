@@ -22,6 +22,7 @@ from base.forms import UserEnrollmentForm, FutsalTeamForm, MatchsForm
 from base import models as mdl
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
+from base.views.reference import AlertLevels, new_message
 
 
 @login_required
@@ -63,7 +64,8 @@ def futsal_teams_search(request):
 def futsal_team_enrollment(request, futsal_team_id):
     if futsal_team_id:
         futsal_team = mdl.futsal_team.search(id=futsal_team_id)[0]
-        enrollments = mdl.futsal_team_enrollment.search(futsal_team=futsal_team)
+        person = mdl.person.search(user=request.user)[0]
+        enrollments = mdl.futsal_team_enrollment.search(futsal_team=futsal_team, person=person)
         if len(enrollments) > 0 : # Déjà inscrit à l'équipe
             enrollment = enrollments[0]
             enr_states = mdl.futsal_team_enrollment.FutsalTeamEnrollment.STATES
