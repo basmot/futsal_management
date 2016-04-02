@@ -35,7 +35,7 @@ from django.conf.urls import url, include
 from django.contrib import admin
 from django.contrib.auth.views import login, logout
 
-from base.views import common
+from base.views import common, futsal_team, futsal_team_enrollment, match
 
 urlpatterns = [
     url(r'^$', common.home, name='home'),
@@ -45,18 +45,18 @@ urlpatterns = [
     url(r'^login/$', login, name='login'),
     url(r'^logout/$', logout, name='logout'),
 
-    url(r'^futsal_team_enrollments/$', common.futsal_team_enrollments, name='futsal_team_enrollments'),
+    url(r'^futsal_team_enrollments/$', futsal_team_enrollment.futsal_team_enrollments, name='futsal_team_enrollments'),
 
-    url(r'^futsal_teams/$', common.futsal_teams, name='futsal_teams'),
-    url(r'^futsal_teams/search$', common.futsal_teams_search, name='futsal_teams_search'),
-    url(r'^futsal_teams/([0-9]+)$', common.futsal_team, name='futsal_team'),
-    url(r'^futsal_teams/([0-9]+)/enrollment$', common.futsal_team_enrollment, name='futsal_team_enrollment'),
-    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)$', common.futsal_team_event, name='futsal_team_event'),
-    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/participate$', common.match_participation_save, name='match_participation_save'),
-    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/delete_participation$', common.match_participation_delete, name='match_participation_delete'),
+    url(r'^futsal_teams/$', futsal_team.futsal_teams, name='futsal_teams'),
+    url(r'^futsal_teams/search$', futsal_team.futsal_teams_search, name='futsal_teams_search'),
+    url(r'^futsal_teams/([0-9]+)$', futsal_team.futsal_team, name='futsal_team'),
+    url(r'^futsal_teams/([0-9]+)/enrollment$', futsal_team.futsal_team_enrollment, name='futsal_team_enrollment'),
+    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)$', futsal_team.futsal_team_event, name='futsal_team_event'),
+    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/participate$', futsal_team.match_participation_save, name='match_participation_save'),
+    url(r'^futsal_teams/([0-9]+)/matchs/([0-9]+)/delete_participation$', futsal_team.match_participation_delete, name='match_participation_delete'),
 
-    url(r'^matchs/$', common.matchs, name='matchs'),
-    url(r'^matchs/search$', common.matchs_search, name='matchs_search'),
+    url(r'^matchs/$', match.matchs, name='matchs'),
+    url(r'^matchs/search$', match.matchs_search, name='matchs_search'),
 
     url(r'^user_enrollment/$', common.user_enrollment, name='user_enrollment'),
 ]
