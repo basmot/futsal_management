@@ -92,7 +92,7 @@
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false" id="bt_user">
                     <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
-                    Bastien Mottiaux
+                    {{request.user.first_name}} {{request.user.last_name}}
                     <span class="caret"></span></a>
                 <ul class="dropdown-menu">
                     <li><a href="{% url 'logout' %}?next=/" id="lnk_logout">
