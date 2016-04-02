@@ -11,7 +11,7 @@ class SportHallAdmin(admin.ModelAdmin):
 class SportHall(models.Model):
     acronym      = models.CharField(max_length=10)
     denomination = models.CharField(max_length=100)
-    address      = models.ForeignKey('SportHallAddress')
+    address      = models.OneToOneField('SportHallAddress')
 
     def __str__(self):
         return self.acronym

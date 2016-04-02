@@ -29,3 +29,23 @@ class MatchParticipation(models.Model):
 
     def __str__(self):
         return str(self.person) + str(self.match)
+
+
+
+def search(id=None, match=None, futsal_team=None):
+    queryset = MatchParticipation.objects
+
+    if id :
+        queryset = queryset.filter(id=id)
+
+    if match :
+        queryset = queryset.filter(match=match)
+
+    if futsal_team :
+        queryset = queryset.filter(futsal_team=futsal_team)
+
+    return queryset
+
+
+def delete(match, person, futsal_team):
+    return MatchParticipation.objects.filter(match=match, person=person, futsal_team=futsal_team).delete()
